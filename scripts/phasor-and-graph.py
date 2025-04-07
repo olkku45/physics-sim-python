@@ -107,7 +107,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# idea olisi tehdä vaiheenosoitin, jota manuaalisesti
-# pyörittämällä saataisiin tehtyä sinimuotoinen graafi
