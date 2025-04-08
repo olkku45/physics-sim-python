@@ -3,8 +3,12 @@ import math
 
 # pygame setup
 pygame.init()
+pygame.font.init()
 window = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
+pygame.display.set_caption("Phasor and Graph")
+font = pygame.font.SysFont('sans', 25)
+
 CIRCLE_RADIUS = 150
 CIRCLE_CENTER = (300, 360)
 ORIGIN = (600, 360)
@@ -13,6 +17,7 @@ X_MAX = 2 * math.pi
 DOT_RADIUS = 10
 LINE_AMOUNT = 300
 DOT_SPEED = 0.00025  # rad / ms
+TEXT = font.render("Angle: ", True, (0, 0, 0))
 
 
 def phasor_dot_coordinates(psi):
@@ -27,6 +32,11 @@ def sine_wave_dot_coordinates(psi):
                 psi * SCALE + ORIGIN[0],
                 -math.sin(psi) * SCALE + ORIGIN[1]
     )
+
+
+def draw_text(text, font, color, x, y):
+    text_obj = font.render(text, True, color)
+    window.blit(text_obj, (x, y))
 
 # main function
 def main():
@@ -85,7 +95,7 @@ def main():
             sine_wave_dot_coordinates(psi), 
             DOT_RADIUS
         )
-
+        # draw sine wave
         for i in range(LINE_AMOUNT):
             t1 = i / LINE_AMOUNT
             t2 = (i + 1) / LINE_AMOUNT
@@ -97,6 +107,19 @@ def main():
                 sine_wave_dot_coordinates(t1),
                 sine_wave_dot_coordinates(t2)
             )
+        # angle text
+        round_angle = round(psi, 2)
+        draw_text(f"Angle: {round_angle} rad", font, (0, 0, 0), 200, 100)
+        # coordinate text
+        coordinate_x, coordinate_y = sine_wave_dot_coordinates(psi)
+        round_coordinate_x = round(coordinate_x)
+        round_coordinate_y = round(coordinate_y)
+        draw_text(f"Coordinate: {round_coordinate_x}, {round_coordinate_y}", font, (0, 0, 0), 700, 100)
+        # axes text
+        draw_text("1 (240)", font, (0, 0, 0), 500, 240)
+        draw_text("0 (345)", font, (0, 0, 0), 500, 345)
+        draw_text("-1 (450)", font, (0, 0, 0), 490, 450)
+        draw_text("2 * pi (1228)", font, (0, 0, 0), 1100, 300)
 
         pygame.display.flip()
         pygame.display.update()
